@@ -1,0 +1,16 @@
+<package>
+  <description brief="ros_rigit">
+
+     ros_rigit
+
+  </description>
+  <author>Shuo Han</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/ros_rigit</url>
+  <depend package="rospy"/>
+  <depend package="ros_flydra"/>
+
+</package>
+
+
