@@ -16,24 +16,42 @@ def rigit(body, world):
     body_nc = body - centroid_body[:,newaxis]
     world_nc = world - centroid_world[:,newaxis]
 
-    M = zeros((4,4))
+    # M = zeros((4,4))
 
-    for i in range(npoints):
+    # for i in range(npoints):
 
-        a = array([0., body_nc[0,i], body_nc[1,i], body_nc[2,i]])
-        b = array([0., world_nc[0,i], world_nc[1,i], world_nc[2,i]])
+    #     a = array([0., body_nc[0,i], body_nc[1,i], body_nc[2,i]])
+    #     b = array([0., world_nc[0,i], world_nc[1,i], world_nc[2,i]])
 
-        Ma = array([[a[0], -a[1], -a[2], -a[3]],
-                  [a[1], a[0], a[3], -a[2]],
-                  [a[2], -a[3], a[0], a[1]],
-                  [a[3], a[2], -a[1], a[0]]])
+    #     Ma = array([[a[0], -a[1], -a[2], -a[3]],
+    #               [a[1], a[0], a[3], -a[2]],
+    #               [a[2], -a[3], a[0], a[1]],
+    #               [a[3], a[2], -a[1], a[0]]])
         
-        Mb = array([[b[0], -b[1], -b[2], -b[3]],
-                  [b[1], b[0], -b[3], b[2]],
-                  [b[2], b[3], b[0], -b[1]],
-                  [b[3], -b[2], b[1], b[0]]])
+    #     Mb = array([[b[0], -b[1], -b[2], -b[3]],
+    #               [b[1], b[0], -b[3], b[2]],
+    #               [b[2], b[3], b[0], -b[1]],
+    #               [b[3], -b[2], b[1], b[0]]])
 
-        M = M + dot(Ma.T,Mb)
+    #     M = M + dot(Ma.T,Mb)
+
+    # The following vectorized code replaces the above
+        
+    a_all = vstack((zeros(npoints), body_nc)).T
+    b_all = vstack((zeros(npoints), world_nc)).T
+
+    Ma_all = array([[[a[0], -a[1], -a[2], -a[3]],
+                     [a[1], a[0], a[3], -a[2]],
+                     [a[2], -a[3], a[0], a[1]],
+                     [a[3], a[2], -a[1], a[0]]]
+                    for a in a_all])
+    Mb_all = array([[[b[0], -b[1], -b[2], -b[3]],
+                     [b[1], b[0], -b[3], b[2]],
+                     [b[2], b[3], b[0], -b[1]],
+                     [b[3], -b[2], b[1], b[0]]]
+                    for b in b_all])
+
+    M = tensordot(Ma_all, Mb_all, axes=([0,2],[0,2]))
 
     E, D = numpy.linalg.eig(M)
 
