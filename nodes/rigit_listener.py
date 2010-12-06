@@ -3,7 +3,7 @@ import roslib; roslib.load_manifest('ros_rigit')
 import rospy
 from ros_flydra.msg import *
 from ros_rigit.msg import pose_object
-from ros_rigit import rigit.rigit_nn as rigit_nn
+from ros_rigit.rigit import rigit_nn
 
 import numpy
 from numpy import *
